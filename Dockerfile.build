@@ -5,6 +5,9 @@ RUN apk add -u unzip
 ADD https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protoc-3.6.1-linux-x86_64.zip /tmp/protoc.zip
 RUN cd /usr/local/ && unzip /tmp/protoc.zip
 
+ADD https://github.com/grpc/grpc-web/releases/download/1.0.3/protoc-gen-grpc-web-1.0.3-linux-x86_64 /usr/local/bin/protoc-gen-grpc-web
+RUN chmod +x /usr/local/bin/protoc-gen-grpc-web
+
 # Actual build image
 FROM golang:1.11.5
 ARG version=1.0.5
@@ -13,6 +16,7 @@ ARG arch=amd64
 # Install required build packages
 RUN apt-get install -y git curl
 COPY --from=protoinstall /usr/local/bin/protoc /usr/local/bin/
+COPY --from=protoinstall /usr/local/bin/protoc-gen-grpc-web /usr/local/bin/
 
 # Install go tools
 RUN go get github.com/gogo/protobuf/protoc-gen-gogo && \
