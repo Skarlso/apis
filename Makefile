@@ -64,6 +64,14 @@ endif
 .PHONY: generate
 generate: $(CACHEVOL) $(MODVOL)
 	$(DOCKERENV) \
+		sh -c " \
+		cd vendor/googleapis ; \
+		protoc -I.:../../vendor:../../vendor/googleapis/:../../vendor/github.com/gogo/protobuf/protobuf/ \
+			--js_out=import_style=commonjs:. \
+			--grpc-web_out=import_style=commonjs,mode=grpcwebtext:. \
+			google/api/annotations.proto \
+			google/api/http.proto"
+	$(DOCKERENV) \
 		go generate ./...
 
 # Generate API docs
