@@ -372,7 +372,11 @@ proto.arangodb.cloud.iam.v1.Group.toObject = function(includeInstance, msg) {
     organizationId: jspb.Message.getFieldWithDefault(msg, 2, ""),
     name: jspb.Message.getFieldWithDefault(msg, 3, ""),
     description: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    deletedAt: (f = msg.getDeletedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isDeleted: jspb.Message.getFieldWithDefault(msg, 7, false),
+    url: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    isVirtual: jspb.Message.getFieldWithDefault(msg, 9, false)
   };
 
   if (includeInstance) {
@@ -429,6 +433,23 @@ proto.arangodb.cloud.iam.v1.Group.deserializeBinaryFromReader = function(msg, re
       var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
       reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreatedAt(value);
+      break;
+    case 6:
+      var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
+      reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setDeletedAt(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDeleted(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUrl(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsVirtual(value);
       break;
     default:
       reader.skipField();
@@ -493,6 +514,35 @@ proto.arangodb.cloud.iam.v1.Group.serializeBinaryToWriter = function(message, wr
       5,
       f,
       github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getDeletedAt();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsDeleted();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+  f = message.getUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getIsVirtual();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
     );
   }
 };
@@ -585,6 +635,85 @@ proto.arangodb.cloud.iam.v1.Group.prototype.clearCreatedAt = function() {
  */
 proto.arangodb.cloud.iam.v1.Group.prototype.hasCreatedAt = function() {
   return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp deleted_at = 6;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.arangodb.cloud.iam.v1.Group.prototype.getDeletedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp, 6));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.arangodb.cloud.iam.v1.Group.prototype.setDeletedAt = function(value) {
+  jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+proto.arangodb.cloud.iam.v1.Group.prototype.clearDeletedAt = function() {
+  this.setDeletedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.iam.v1.Group.prototype.hasDeletedAt = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional bool is_deleted = 7;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.iam.v1.Group.prototype.getIsDeleted = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 7, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.iam.v1.Group.prototype.setIsDeleted = function(value) {
+  jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional string url = 8;
+ * @return {string}
+ */
+proto.arangodb.cloud.iam.v1.Group.prototype.getUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.iam.v1.Group.prototype.setUrl = function(value) {
+  jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional bool is_virtual = 9;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.iam.v1.Group.prototype.getIsVirtual = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 9, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.iam.v1.Group.prototype.setIsVirtual = function(value) {
+  jspb.Message.setProto3BooleanField(this, 9, value);
 };
 
 
@@ -1691,7 +1820,10 @@ proto.arangodb.cloud.iam.v1.Role.toObject = function(includeInstance, msg) {
     description: jspb.Message.getFieldWithDefault(msg, 4, ""),
     permissionsList: jspb.Message.getRepeatedField(msg, 5),
     isPredefined: jspb.Message.getFieldWithDefault(msg, 6, false),
-    createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    deletedAt: (f = msg.getDeletedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isDeleted: jspb.Message.getFieldWithDefault(msg, 9, false),
+    url: jspb.Message.getFieldWithDefault(msg, 10, "")
   };
 
   if (includeInstance) {
@@ -1756,6 +1888,19 @@ proto.arangodb.cloud.iam.v1.Role.deserializeBinaryFromReader = function(msg, rea
       var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
       reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setCreatedAt(value);
+      break;
+    case 8:
+      var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
+      reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setDeletedAt(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDeleted(value);
+      break;
+    case 10:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUrl(value);
       break;
     default:
       reader.skipField();
@@ -1834,6 +1979,28 @@ proto.arangodb.cloud.iam.v1.Role.serializeBinaryToWriter = function(message, wri
       7,
       f,
       github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getDeletedAt();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsDeleted();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
+    );
+  }
+  f = message.getUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      10,
+      f
     );
   }
 };
@@ -1972,6 +2139,68 @@ proto.arangodb.cloud.iam.v1.Role.prototype.clearCreatedAt = function() {
  */
 proto.arangodb.cloud.iam.v1.Role.prototype.hasCreatedAt = function() {
   return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp deleted_at = 8;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.arangodb.cloud.iam.v1.Role.prototype.getDeletedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp, 8));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.arangodb.cloud.iam.v1.Role.prototype.setDeletedAt = function(value) {
+  jspb.Message.setWrapperField(this, 8, value);
+};
+
+
+proto.arangodb.cloud.iam.v1.Role.prototype.clearDeletedAt = function() {
+  this.setDeletedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.iam.v1.Role.prototype.hasDeletedAt = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
+/**
+ * optional bool is_deleted = 9;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.iam.v1.Role.prototype.getIsDeleted = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 9, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.iam.v1.Role.prototype.setIsDeleted = function(value) {
+  jspb.Message.setProto3BooleanField(this, 9, value);
+};
+
+
+/**
+ * optional string url = 10;
+ * @return {string}
+ */
+proto.arangodb.cloud.iam.v1.Role.prototype.getUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.iam.v1.Role.prototype.setUrl = function(value) {
+  jspb.Message.setProto3StringField(this, 10, value);
 };
 
 

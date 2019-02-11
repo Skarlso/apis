@@ -533,15 +533,15 @@ proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServicePromiseClient.prot
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationRequest,
- *   !proto.arangodb.cloud.common.v1.YesOrNo>}
+ *   !proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse>}
  */
 const methodInfo_ResourceManagerService_IsMemberOfOrganization = new grpc.web.AbstractClientBase.MethodInfo(
-  common_v1_common_pb.YesOrNo,
+  proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse,
   /** @param {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  common_v1_common_pb.YesOrNo.deserializeBinary
+  proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.deserializeBinary
 );
 
 
@@ -550,9 +550,9 @@ const methodInfo_ResourceManagerService_IsMemberOfOrganization = new grpc.web.Ab
  *     request proto
  * @param {!Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.arangodb.cloud.common.v1.YesOrNo)}
+ * @param {function(?grpc.web.Error, ?proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.arangodb.cloud.common.v1.YesOrNo>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServiceClient.prototype.isMemberOfOrganization =
@@ -571,7 +571,7 @@ proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServiceClient.prototype.i
  *     request proto
  * @param {!Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.arangodb.cloud.common.v1.YesOrNo>}
+ * @return {!Promise<!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse>}
  *     The XHR Node Readable Stream
  */
 proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServicePromiseClient.prototype.isMemberOfOrganization =
@@ -858,6 +858,62 @@ proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServicePromiseClient.prot
     function(request, metadata) {
   return new Promise((resolve, reject) => {
     this.delegateClient_.deleteProject(
+      request, metadata, (error, response) => {
+        error ? reject(error) : resolve(response);
+      });
+  });
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.arangodb.cloud.resourcemanager.v1.ListEventOptions,
+ *   !proto.arangodb.cloud.resourcemanager.v1.EventList>}
+ */
+const methodInfo_ResourceManagerService_ListEvents = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.arangodb.cloud.resourcemanager.v1.EventList,
+  /** @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.arangodb.cloud.resourcemanager.v1.EventList.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} request The
+ *     request proto
+ * @param {!Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.arangodb.cloud.resourcemanager.v1.EventList)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.arangodb.cloud.resourcemanager.v1.EventList>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServiceClient.prototype.listEvents =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/arangodb.cloud.resourcemanager.v1.ResourceManagerService/ListEvents',
+      request,
+      metadata,
+      methodInfo_ResourceManagerService_ListEvents,
+      callback);
+};
+
+
+/**
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} request The
+ *     request proto
+ * @param {!Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.arangodb.cloud.resourcemanager.v1.EventList>}
+ *     The XHR Node Readable Stream
+ */
+proto.arangodb.cloud.resourcemanager.v1.ResourceManagerServicePromiseClient.prototype.listEvents =
+    function(request, metadata) {
+  return new Promise((resolve, reject) => {
+    this.delegateClient_.listEvents(
       request, metadata, (error, response) => {
         error ? reject(error) : resolve(response);
       });

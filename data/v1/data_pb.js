@@ -79,6 +79,7 @@ proto.arangodb.cloud.data.v1.Deployment.toObject = function(includeInstance, msg
     regionId: jspb.Message.getFieldWithDefault(msg, 6, ""),
     createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
     deletedAt: (f = msg.getDeletedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isDeleted: jspb.Message.getFieldWithDefault(msg, 9, false),
     version: jspb.Message.getFieldWithDefault(msg, 101, ""),
     certificates: (f = msg.getCertificates()) && proto.arangodb.cloud.data.v1.Deployment.CertificateSpec.toObject(includeInstance, f),
     servers: (f = msg.getServers()) && proto.arangodb.cloud.data.v1.Deployment.ServersSpec.toObject(includeInstance, f),
@@ -152,6 +153,10 @@ proto.arangodb.cloud.data.v1.Deployment.deserializeBinaryFromReader = function(m
       var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
       reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setDeletedAt(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDeleted(value);
       break;
     case 101:
       var value = /** @type {string} */ (reader.readString());
@@ -257,6 +262,13 @@ proto.arangodb.cloud.data.v1.Deployment.serializeBinaryToWriter = function(messa
       8,
       f,
       github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsDeleted();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
     );
   }
   f = message.getVersion();
@@ -1184,6 +1196,23 @@ proto.arangodb.cloud.data.v1.Deployment.prototype.clearDeletedAt = function() {
  */
 proto.arangodb.cloud.data.v1.Deployment.prototype.hasDeletedAt = function() {
   return jspb.Message.getField(this, 8) != null;
+};
+
+
+/**
+ * optional bool is_deleted = 9;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.data.v1.Deployment.prototype.getIsDeleted = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 9, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.data.v1.Deployment.prototype.setIsDeleted = function(value) {
+  jspb.Message.setProto3BooleanField(this, 9, value);
 };
 
 

@@ -73,7 +73,8 @@ proto.arangodb.cloud.crypto.v1.CACertificate.toObject = function(includeInstance
     createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
     deletedAt: (f = msg.getDeletedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
     expiresAt: (f = msg.getExpiresAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
-    certificatePem: jspb.Message.getFieldWithDefault(msg, 10, "")
+    certificatePem: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    isDeleted: jspb.Message.getFieldWithDefault(msg, 11, false)
   };
 
   if (includeInstance) {
@@ -153,6 +154,10 @@ proto.arangodb.cloud.crypto.v1.CACertificate.deserializeBinaryFromReader = funct
     case 10:
       var value = /** @type {string} */ (reader.readString());
       msg.setCertificatePem(value);
+      break;
+    case 11:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDeleted(value);
       break;
     default:
       reader.skipField();
@@ -254,6 +259,13 @@ proto.arangodb.cloud.crypto.v1.CACertificate.serializeBinaryToWriter = function(
   if (f.length > 0) {
     writer.writeString(
       10,
+      f
+    );
+  }
+  f = message.getIsDeleted();
+  if (f) {
+    writer.writeBool(
+      11,
       f
     );
   }
@@ -467,6 +479,23 @@ proto.arangodb.cloud.crypto.v1.CACertificate.prototype.getCertificatePem = funct
 /** @param {string} value */
 proto.arangodb.cloud.crypto.v1.CACertificate.prototype.setCertificatePem = function(value) {
   jspb.Message.setProto3StringField(this, 10, value);
+};
+
+
+/**
+ * optional bool is_deleted = 11;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.crypto.v1.CACertificate.prototype.getIsDeleted = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 11, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.crypto.v1.CACertificate.prototype.setIsDeleted = function(value) {
+  jspb.Message.setProto3BooleanField(this, 11, value);
 };
 
 

@@ -38,7 +38,8 @@ type Organization struct {
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// Description of the organization
 	Description string `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	// Set when this organization is deleted
+	// Set when this organization is deleted.
+	// This is a read-only value.
 	IsDeleted bool `protobuf:"varint,5,opt,name=is_deleted,json=isDeleted,proto3" json:"is_deleted,omitempty"`
 	// The creation timestamp of the organization
 	CreatedAt *types.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -344,6 +345,64 @@ func (m *IsMemberOfOrganizationRequest) GetOrganizationId() string {
 	return ""
 }
 
+// Response for IsMemberOfOrganization.
+type IsMemberOfOrganizationResponse struct {
+	// Set if the requested user is a member of the requested organization.
+	Member bool `protobuf:"varint,1,opt,name=member,proto3" json:"member,omitempty"`
+	// Set if the requested user is an owner of the requested organization.
+	Owner                bool     `protobuf:"varint,2,opt,name=owner,proto3" json:"owner,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *IsMemberOfOrganizationResponse) Reset()         { *m = IsMemberOfOrganizationResponse{} }
+func (m *IsMemberOfOrganizationResponse) String() string { return proto.CompactTextString(m) }
+func (*IsMemberOfOrganizationResponse) ProtoMessage()    {}
+func (*IsMemberOfOrganizationResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81de387952a6887e, []int{5}
+}
+func (m *IsMemberOfOrganizationResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *IsMemberOfOrganizationResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_IsMemberOfOrganizationResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *IsMemberOfOrganizationResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_IsMemberOfOrganizationResponse.Merge(m, src)
+}
+func (m *IsMemberOfOrganizationResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *IsMemberOfOrganizationResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_IsMemberOfOrganizationResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_IsMemberOfOrganizationResponse proto.InternalMessageInfo
+
+func (m *IsMemberOfOrganizationResponse) GetMember() bool {
+	if m != nil {
+		return m.Member
+	}
+	return false
+}
+
+func (m *IsMemberOfOrganizationResponse) GetOwner() bool {
+	if m != nil {
+		return m.Owner
+	}
+	return false
+}
+
 // Request arguments for Add/DeleteOrganizationMembers.
 type OrganizationMembersRequest struct {
 	// Identifier of the organization to add/remove a user from
@@ -362,7 +421,7 @@ func (m *OrganizationMembersRequest) Reset()         { *m = OrganizationMembersR
 func (m *OrganizationMembersRequest) String() string { return proto.CompactTextString(m) }
 func (*OrganizationMembersRequest) ProtoMessage()    {}
 func (*OrganizationMembersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_81de387952a6887e, []int{5}
+	return fileDescriptor_81de387952a6887e, []int{6}
 }
 func (m *OrganizationMembersRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -436,7 +495,7 @@ func (m *Project) Reset()         { *m = Project{} }
 func (m *Project) String() string { return proto.CompactTextString(m) }
 func (*Project) ProtoMessage()    {}
 func (*Project) Descriptor() ([]byte, []int) {
-	return fileDescriptor_81de387952a6887e, []int{6}
+	return fileDescriptor_81de387952a6887e, []int{7}
 }
 func (m *Project) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -533,7 +592,7 @@ func (m *ProjectList) Reset()         { *m = ProjectList{} }
 func (m *ProjectList) String() string { return proto.CompactTextString(m) }
 func (*ProjectList) ProtoMessage()    {}
 func (*ProjectList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_81de387952a6887e, []int{7}
+	return fileDescriptor_81de387952a6887e, []int{8}
 }
 func (m *ProjectList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -569,81 +628,347 @@ func (m *ProjectList) GetItems() []*Project {
 	return nil
 }
 
+// An Event represents something that happened to an organization
+// in the ArangoDB Managed service.
+type Event struct {
+	// System identifier of the event.
+	// This is a read-only value.
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// URL of this resource
+	// This is a read-only value and cannot be initialized.
+	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	// Identifier of the organization that owns this event.
+	// This is a read-only value.
+	OrganizationId string `protobuf:"bytes,3,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	// Identifier of the subject of this event.
+	// This is a read-only value.
+	// If the subject of this event is an organization,
+	// this value is a duplicate of organization_id.
+	SubjectId string `protobuf:"bytes,4,opt,name=subject_id,json=subjectId,proto3" json:"subject_id,omitempty"`
+	// Type of the event.
+	Type string `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
+	// Payload of the event.
+	// The fields used in the payload are specific
+	// to the type of event.
+	Payload map[string]string `protobuf:"bytes,6,rep,name=payload,proto3" json:"payload,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// The creation timestamp of the event
+	CreatedAt            *types.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *Event) Reset()         { *m = Event{} }
+func (m *Event) String() string { return proto.CompactTextString(m) }
+func (*Event) ProtoMessage()    {}
+func (*Event) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81de387952a6887e, []int{9}
+}
+func (m *Event) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Event) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Event.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *Event) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Event.Merge(m, src)
+}
+func (m *Event) XXX_Size() int {
+	return m.Size()
+}
+func (m *Event) XXX_DiscardUnknown() {
+	xxx_messageInfo_Event.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Event proto.InternalMessageInfo
+
+func (m *Event) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Event) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
+func (m *Event) GetOrganizationId() string {
+	if m != nil {
+		return m.OrganizationId
+	}
+	return ""
+}
+
+func (m *Event) GetSubjectId() string {
+	if m != nil {
+		return m.SubjectId
+	}
+	return ""
+}
+
+func (m *Event) GetType() string {
+	if m != nil {
+		return m.Type
+	}
+	return ""
+}
+
+func (m *Event) GetPayload() map[string]string {
+	if m != nil {
+		return m.Payload
+	}
+	return nil
+}
+
+func (m *Event) GetCreatedAt() *types.Timestamp {
+	if m != nil {
+		return m.CreatedAt
+	}
+	return nil
+}
+
+// List of Events.
+type EventList struct {
+	Items                []*Event `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *EventList) Reset()         { *m = EventList{} }
+func (m *EventList) String() string { return proto.CompactTextString(m) }
+func (*EventList) ProtoMessage()    {}
+func (*EventList) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81de387952a6887e, []int{10}
+}
+func (m *EventList) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EventList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EventList.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EventList) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventList.Merge(m, src)
+}
+func (m *EventList) XXX_Size() int {
+	return m.Size()
+}
+func (m *EventList) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventList.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EventList proto.InternalMessageInfo
+
+func (m *EventList) GetItems() []*Event {
+	if m != nil {
+		return m.Items
+	}
+	return nil
+}
+
+// Options for ListEvents
+type ListEventOptions struct {
+	// Standard list options
+	Options *v1.ListOptions `protobuf:"bytes,1,opt,name=options,proto3" json:"options,omitempty"`
+	// If set, filter on the subject_id of event
+	SubjectIds []string `protobuf:"bytes,2,rep,name=subject_ids,json=subjectIds,proto3" json:"subject_ids,omitempty"`
+	// If set, filter on the type of event
+	Types []string `protobuf:"bytes,3,rep,name=types,proto3" json:"types,omitempty"`
+	// If set, filter of events created after this timestamp
+	CreatedAfter *types.Timestamp `protobuf:"bytes,4,opt,name=created_after,json=createdAfter,proto3" json:"created_after,omitempty"`
+	// If set, filter of events created before this timestamp
+	CreatedBefore        *types.Timestamp `protobuf:"bytes,5,opt,name=created_before,json=createdBefore,proto3" json:"created_before,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *ListEventOptions) Reset()         { *m = ListEventOptions{} }
+func (m *ListEventOptions) String() string { return proto.CompactTextString(m) }
+func (*ListEventOptions) ProtoMessage()    {}
+func (*ListEventOptions) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81de387952a6887e, []int{11}
+}
+func (m *ListEventOptions) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *ListEventOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_ListEventOptions.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *ListEventOptions) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEventOptions.Merge(m, src)
+}
+func (m *ListEventOptions) XXX_Size() int {
+	return m.Size()
+}
+func (m *ListEventOptions) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEventOptions.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListEventOptions proto.InternalMessageInfo
+
+func (m *ListEventOptions) GetOptions() *v1.ListOptions {
+	if m != nil {
+		return m.Options
+	}
+	return nil
+}
+
+func (m *ListEventOptions) GetSubjectIds() []string {
+	if m != nil {
+		return m.SubjectIds
+	}
+	return nil
+}
+
+func (m *ListEventOptions) GetTypes() []string {
+	if m != nil {
+		return m.Types
+	}
+	return nil
+}
+
+func (m *ListEventOptions) GetCreatedAfter() *types.Timestamp {
+	if m != nil {
+		return m.CreatedAfter
+	}
+	return nil
+}
+
+func (m *ListEventOptions) GetCreatedBefore() *types.Timestamp {
+	if m != nil {
+		return m.CreatedBefore
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*Organization)(nil), "arangodb.cloud.resourcemanager.v1.Organization")
 	proto.RegisterType((*OrganizationList)(nil), "arangodb.cloud.resourcemanager.v1.OrganizationList")
 	proto.RegisterType((*Member)(nil), "arangodb.cloud.resourcemanager.v1.Member")
 	proto.RegisterType((*MemberList)(nil), "arangodb.cloud.resourcemanager.v1.MemberList")
 	proto.RegisterType((*IsMemberOfOrganizationRequest)(nil), "arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationRequest")
+	proto.RegisterType((*IsMemberOfOrganizationResponse)(nil), "arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse")
 	proto.RegisterType((*OrganizationMembersRequest)(nil), "arangodb.cloud.resourcemanager.v1.OrganizationMembersRequest")
 	proto.RegisterType((*Project)(nil), "arangodb.cloud.resourcemanager.v1.Project")
 	proto.RegisterType((*ProjectList)(nil), "arangodb.cloud.resourcemanager.v1.ProjectList")
+	proto.RegisterType((*Event)(nil), "arangodb.cloud.resourcemanager.v1.Event")
+	proto.RegisterMapType((map[string]string)(nil), "arangodb.cloud.resourcemanager.v1.Event.PayloadEntry")
+	proto.RegisterType((*EventList)(nil), "arangodb.cloud.resourcemanager.v1.EventList")
+	proto.RegisterType((*ListEventOptions)(nil), "arangodb.cloud.resourcemanager.v1.ListEventOptions")
 }
 
 func init() { proto.RegisterFile("resourcemanager.proto", fileDescriptor_81de387952a6887e) }
 
 var fileDescriptor_81de387952a6887e = []byte{
-	// 959 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x97, 0x4f, 0x6f, 0x1b, 0x45,
-	0x14, 0xc0, 0x19, 0xa7, 0xb1, 0x93, 0xe7, 0xa6, 0x2d, 0x03, 0xa4, 0xc6, 0xa2, 0xc1, 0x5d, 0x54,
-	0x35, 0x58, 0x64, 0x97, 0x38, 0x42, 0x88, 0x96, 0xaa, 0x49, 0x9b, 0x28, 0x32, 0x25, 0x18, 0x0c,
-	0x1c, 0xca, 0xc5, 0x5a, 0xef, 0x4c, 0x96, 0x45, 0xde, 0x9d, 0x65, 0x67, 0x6c, 0x28, 0x55, 0x2e,
-	0x5c, 0x8b, 0xb8, 0x70, 0xe1, 0xcf, 0x81, 0x03, 0x17, 0x84, 0xc4, 0x09, 0x3e, 0x02, 0x12, 0x1c,
-	0x2b, 0xf1, 0x05, 0x50, 0xe0, 0x5b, 0x70, 0x41, 0x33, 0xb3, 0x5b, 0x76, 0x8d, 0x5d, 0xef, 0xba,
-	0xb4, 0xb7, 0xf1, 0xec, 0xfb, 0xf3, 0x7b, 0x6f, 0xde, 0xbc, 0x37, 0x86, 0xa7, 0x22, 0xca, 0xd9,
-	0x30, 0x72, 0xa8, 0x6f, 0x07, 0xb6, 0x4b, 0x23, 0x33, 0x8c, 0x98, 0x60, 0xf8, 0xbc, 0x1d, 0xd9,
-	0x81, 0xcb, 0x48, 0xdf, 0x74, 0x06, 0x6c, 0x48, 0xcc, 0x71, 0xa9, 0xd1, 0x66, 0x7d, 0xd5, 0x61,
-	0xbe, 0xcf, 0x02, 0x6b, 0xb4, 0x69, 0xe9, 0x95, 0x56, 0xad, 0x5f, 0x76, 0x3d, 0xf1, 0xfe, 0xb0,
-	0x6f, 0x3a, 0xcc, 0xb7, 0x5c, 0x36, 0xb0, 0x03, 0xd7, 0x52, 0x1f, 0xfa, 0xc3, 0x43, 0x2b, 0x14,
-	0xb7, 0x42, 0xca, 0x2d, 0xe1, 0xf9, 0x94, 0x0b, 0xdb, 0x0f, 0xff, 0x5d, 0xc5, 0xca, 0xcf, 0xb8,
-	0x8c, 0xb9, 0x03, 0x6a, 0xd9, 0xa1, 0x67, 0xd9, 0x41, 0xc0, 0x84, 0x2d, 0x3c, 0x16, 0x70, 0xfd,
-	0xd5, 0xf8, 0x1b, 0xc1, 0xc9, 0x4e, 0xe4, 0xda, 0x81, 0xf7, 0x89, 0xda, 0xc7, 0xa7, 0xa0, 0xe4,
-	0x91, 0x1a, 0x6a, 0xa0, 0xf5, 0xe5, 0x6e, 0xc9, 0x23, 0xf8, 0x0c, 0x2c, 0x0c, 0xa3, 0x41, 0xad,
-	0xa4, 0x36, 0xe4, 0x12, 0x63, 0x38, 0x11, 0xd8, 0x3e, 0xad, 0x2d, 0xa8, 0x2d, 0xb5, 0xc6, 0x0d,
-	0xa8, 0x12, 0xca, 0x9d, 0xc8, 0x0b, 0xa5, 0x91, 0xda, 0x09, 0xf5, 0x29, 0xbd, 0x85, 0xcf, 0x01,
-	0x78, 0xbc, 0x47, 0xe8, 0x80, 0x0a, 0x4a, 0x6a, 0x8b, 0x0d, 0xb4, 0xbe, 0xd4, 0x5d, 0xf6, 0xf8,
-	0xae, 0xde, 0xc0, 0xaf, 0x00, 0x38, 0x11, 0xb5, 0x05, 0x25, 0x3d, 0x5b, 0xd4, 0xca, 0x0d, 0xb4,
-	0x5e, 0x6d, 0xd5, 0x4d, 0x8d, 0x6e, 0x26, 0xc1, 0x9a, 0xef, 0x24, 0xb1, 0x75, 0x97, 0x63, 0xe9,
-	0x1d, 0x21, 0x55, 0x63, 0xb3, 0x52, 0xb5, 0x32, 0x5b, 0x35, 0x96, 0xde, 0x11, 0xc6, 0x4d, 0x38,
-	0x93, 0x0e, 0xfe, 0x75, 0x8f, 0x0b, 0xbc, 0x07, 0x8b, 0x9e, 0xa0, 0x3e, 0xaf, 0xa1, 0xc6, 0xc2,
-	0x7a, 0xb5, 0x65, 0x99, 0x33, 0xcf, 0xcd, 0x4c, 0xdb, 0xe8, 0x6a, 0x6d, 0xe3, 0x65, 0x28, 0x1f,
-	0x50, 0xbf, 0x4f, 0x23, 0x7c, 0x16, 0x2a, 0x43, 0x4e, 0xa3, 0xde, 0xbd, 0xb4, 0x96, 0xe5, 0xcf,
-	0x36, 0xc1, 0x4f, 0xc2, 0x22, 0xfb, 0x28, 0xa0, 0x91, 0x4a, 0xee, 0x52, 0x57, 0xff, 0x30, 0x0e,
-	0x00, 0xb4, 0xa2, 0xa2, 0xb9, 0x9a, 0xa5, 0x79, 0x3e, 0x07, 0x8d, 0xd6, 0x4e, 0x38, 0x6c, 0x38,
-	0xd7, 0xe6, 0x7a, 0xab, 0x73, 0x98, 0x01, 0xa5, 0x1f, 0x0e, 0x29, 0x17, 0xd3, 0xf1, 0x2e, 0xc2,
-	0x69, 0x96, 0x92, 0x97, 0x02, 0xba, 0x0a, 0x4e, 0xa5, 0xb7, 0xdb, 0xc4, 0xf8, 0x1c, 0x41, 0x3d,
-	0x6d, 0x59, 0x7b, 0xe3, 0x89, 0x83, 0x09, 0x76, 0xd0, 0x24, 0x3b, 0x78, 0x1f, 0x2a, 0xbe, 0x56,
-	0x55, 0x8e, 0xaa, 0xad, 0x8d, 0xdc, 0xd1, 0xca, 0x5c, 0x75, 0x13, 0x6d, 0xe3, 0xdb, 0x12, 0x54,
-	0xde, 0x8c, 0xd8, 0x07, 0xd4, 0x11, 0x0f, 0xad, 0x9e, 0x27, 0x44, 0xb5, 0x38, 0x31, 0xaa, 0x6c,
-	0xe1, 0x97, 0xef, 0x5f, 0xf8, 0x95, 0xf9, 0x0b, 0x7f, 0xa9, 0x48, 0xe1, 0x77, 0xa0, 0x1a, 0x27,
-	0x48, 0x55, 0xd9, 0x76, 0xb6, 0xca, 0x9a, 0x39, 0xf2, 0x1e, 0xab, 0xc7, 0x65, 0xd6, 0xba, 0xf3,
-	0x04, 0xac, 0x76, 0x63, 0xa9, 0x03, 0x2d, 0xf5, 0x36, 0x8d, 0x46, 0x9e, 0x43, 0xf1, 0x77, 0x08,
-	0x1e, 0x97, 0x5e, 0xd2, 0x25, 0xc2, 0xf1, 0x85, 0x71, 0x1f, 0x71, 0xc7, 0x1b, 0x6d, 0x9a, 0x4a,
-	0x58, 0x65, 0x99, 0xd7, 0xb7, 0x0a, 0x5e, 0x3f, 0xa9, 0x6b, 0xb4, 0x3e, 0xfd, 0xfd, 0xaf, 0x2f,
-	0x4a, 0x2f, 0xe0, 0xa6, 0x6a, 0x7a, 0x63, 0x1a, 0xb2, 0xbb, 0x72, 0x3a, 0x38, 0xb4, 0x58, 0x86,
-	0xe7, 0x1b, 0x04, 0xa7, 0xf7, 0x69, 0x06, 0x12, 0x3f, 0x37, 0x9d, 0xb1, 0xbd, 0x9b, 0x10, 0x16,
-	0x6d, 0x10, 0xb3, 0xe9, 0x32, 0x60, 0xd6, 0x6d, 0x8f, 0x1c, 0xe1, 0xef, 0x11, 0xe0, 0xeb, 0xea,
-	0xe0, 0x33, 0x80, 0x45, 0x7d, 0x17, 0x87, 0x7d, 0x51, 0xc1, 0x36, 0x8d, 0x0b, 0xb9, 0x60, 0x2f,
-	0xa1, 0x26, 0xfe, 0x11, 0x01, 0x7e, 0x37, 0x24, 0x8f, 0x1e, 0xf5, 0x25, 0x85, 0x6a, 0xb5, 0x0a,
-	0xe4, 0x55, 0xf2, 0x7e, 0x8d, 0x00, 0xeb, 0xcb, 0xf8, 0x60, 0xbc, 0xcf, 0x4e, 0x2f, 0x96, 0x3d,
-	0x3f, 0x14, 0xb7, 0x92, 0x73, 0x6f, 0x16, 0x39, 0xf7, 0x9f, 0x10, 0x9c, 0x1d, 0xbf, 0x3b, 0x71,
-	0x7b, 0xcd, 0x7b, 0x83, 0x8a, 0x35, 0x51, 0xe3, 0x9a, 0xa2, 0x7c, 0x15, 0x5f, 0xca, 0x49, 0xe9,
-	0xb0, 0x40, 0xd0, 0x8f, 0x45, 0xcf, 0x23, 0x47, 0x56, 0xdc, 0x7f, 0xf1, 0x2f, 0x08, 0x56, 0x77,
-	0x08, 0x99, 0x04, 0x7d, 0xa5, 0x60, 0x5a, 0xb3, 0xb3, 0x64, 0x76, 0x92, 0x5f, 0x53, 0xf8, 0xbb,
-	0xc6, 0xd5, 0x9c, 0xf8, 0x63, 0x3d, 0xfc, 0x5e, 0x0c, 0xb2, 0x32, 0x7e, 0x45, 0xf0, 0xf4, 0x7f,
-	0x2b, 0xe3, 0x11, 0x47, 0xd2, 0xfc, 0x3f, 0x22, 0xb9, 0x8b, 0x60, 0x75, 0xf2, 0x2b, 0x00, 0x6f,
-	0xe7, 0x08, 0xe3, 0xbe, 0x0f, 0x88, 0xfa, 0xf9, 0xe9, 0x91, 0xdc, 0xa4, 0xbc, 0x13, 0xbd, 0xc1,
-	0x8c, 0xb7, 0x54, 0x2c, 0x37, 0x70, 0xfb, 0x01, 0x63, 0xb1, 0x6e, 0xc7, 0x4f, 0x95, 0x23, 0xfc,
-	0x03, 0x82, 0x93, 0xb2, 0x60, 0xe3, 0x39, 0x94, 0xfb, 0x3a, 0x98, 0xf9, 0x67, 0x9b, 0xba, 0x0f,
-	0xd7, 0x15, 0xfa, 0x15, 0x7c, 0x79, 0x8e, 0xfb, 0x10, 0x26, 0x6c, 0x9f, 0x21, 0x80, 0x7d, 0x9a,
-	0xb0, 0xe6, 0x9b, 0x2b, 0x05, 0x86, 0xb0, 0xb1, 0xa1, 0x20, 0x2f, 0xe2, 0xa9, 0x5d, 0x3a, 0x21,
-	0xd1, 0x5d, 0xe5, 0x67, 0x04, 0x2b, 0x7a, 0x9a, 0x24, 0x44, 0x05, 0x9c, 0x15, 0x02, 0xbb, 0xa1,
-	0xc0, 0xf6, 0x8c, 0xed, 0x79, 0x0f, 0x3e, 0x01, 0x97, 0x55, 0xfc, 0x15, 0x82, 0x15, 0x3d, 0x59,
-	0x1e, 0x36, 0x76, 0x3c, 0xf5, 0x5a, 0xf9, 0xf2, 0x29, 0xd9, 0xee, 0x20, 0x58, 0xd1, 0xbd, 0x62,
-	0x1e, 0xb6, 0x99, 0xcd, 0x20, 0x3e, 0xe0, 0x66, 0x3e, 0xa0, 0x6b, 0x7b, 0xbf, 0x1d, 0xaf, 0xa1,
-	0xbb, 0xc7, 0x6b, 0xe8, 0x8f, 0xe3, 0x35, 0xf4, 0xe5, 0x9f, 0x6b, 0x8f, 0xbd, 0xb7, 0x95, 0xfa,
-	0x0b, 0x99, 0xf8, 0xda, 0xd0, 0xfa, 0x44, 0xda, 0xe4, 0x13, 0x8c, 0xf6, 0xcb, 0xea, 0x11, 0xb9,
-	0xf5, 0x4f, 0x00, 0x00, 0x00, 0xff, 0xff, 0xaf, 0x99, 0x87, 0xc8, 0xd2, 0x0e, 0x00, 0x00,
+	// 1212 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x98, 0xbf, 0x6f, 0x23, 0x45,
+	0x1b, 0xc7, 0xdf, 0xb1, 0x2f, 0x76, 0xfc, 0x38, 0xc9, 0xe5, 0x1d, 0x1d, 0x39, 0x63, 0x71, 0xb9,
+	0xb0, 0xe8, 0x74, 0xc6, 0xba, 0xec, 0x12, 0x47, 0x27, 0x20, 0xc7, 0x91, 0x38, 0x89, 0x15, 0x99,
+	0x10, 0x72, 0x2c, 0x50, 0x40, 0x13, 0xad, 0xbd, 0x13, 0xb3, 0xe0, 0xdd, 0x59, 0x76, 0xd6, 0x86,
+	0x70, 0x4a, 0x43, 0x0b, 0xba, 0x86, 0x86, 0x1f, 0x05, 0x05, 0x0d, 0x42, 0xa2, 0x82, 0x8a, 0x1a,
+	0x09, 0x1a, 0x24, 0x24, 0xfe, 0x01, 0x14, 0x28, 0x28, 0xe9, 0x69, 0xd0, 0xcc, 0xec, 0xe6, 0xbc,
+	0xc6, 0x4e, 0x66, 0x13, 0xee, 0xba, 0xf1, 0xec, 0x3c, 0xcf, 0x7c, 0x9e, 0xef, 0x33, 0xcf, 0xcc,
+	0x23, 0xc3, 0x23, 0x01, 0x61, 0xb4, 0x17, 0xb4, 0x89, 0x6b, 0x79, 0x56, 0x87, 0x04, 0xba, 0x1f,
+	0xd0, 0x90, 0xe2, 0xc7, 0xad, 0xc0, 0xf2, 0x3a, 0xd4, 0x6e, 0xe9, 0xed, 0x2e, 0xed, 0xd9, 0xfa,
+	0xf0, 0xaa, 0xfe, 0x52, 0x79, 0xae, 0x4d, 0x5d, 0x97, 0x7a, 0x46, 0x7f, 0xc9, 0x90, 0x23, 0x69,
+	0x5a, 0xbe, 0xd5, 0x71, 0xc2, 0x37, 0x7b, 0x2d, 0xbd, 0x4d, 0x5d, 0xa3, 0x43, 0xbb, 0x96, 0xd7,
+	0x31, 0xc4, 0x87, 0x56, 0x6f, 0xdf, 0xf0, 0xc3, 0x03, 0x9f, 0x30, 0x23, 0x74, 0x5c, 0xc2, 0x42,
+	0xcb, 0xf5, 0xef, 0x8f, 0x22, 0xe3, 0xc7, 0x3a, 0x94, 0x76, 0xba, 0xc4, 0xb0, 0x7c, 0xc7, 0xb0,
+	0x3c, 0x8f, 0x86, 0x56, 0xe8, 0x50, 0x8f, 0xc9, 0xaf, 0xda, 0xdf, 0x08, 0xa6, 0x76, 0x83, 0x8e,
+	0xe5, 0x39, 0xef, 0x8b, 0x79, 0x3c, 0x03, 0x19, 0xc7, 0x2e, 0xa1, 0x05, 0x54, 0x29, 0x98, 0x19,
+	0xc7, 0xc6, 0xb3, 0x90, 0xed, 0x05, 0xdd, 0x52, 0x46, 0x4c, 0xf0, 0x21, 0xc6, 0x70, 0xc1, 0xb3,
+	0x5c, 0x52, 0xca, 0x8a, 0x29, 0x31, 0xc6, 0x0b, 0x50, 0xb4, 0x09, 0x6b, 0x07, 0x8e, 0xcf, 0x9d,
+	0x94, 0x2e, 0x88, 0x4f, 0x83, 0x53, 0xf8, 0x0a, 0x80, 0xc3, 0xf6, 0x6c, 0xd2, 0x25, 0x21, 0xb1,
+	0x4b, 0x13, 0x0b, 0xa8, 0x32, 0x69, 0x16, 0x1c, 0xb6, 0x29, 0x27, 0xf0, 0xb3, 0x00, 0xed, 0x80,
+	0x58, 0x21, 0xb1, 0xf7, 0xac, 0xb0, 0x94, 0x5b, 0x40, 0x95, 0x62, 0xad, 0xac, 0x4b, 0x74, 0x3d,
+	0x0e, 0x56, 0x7f, 0x35, 0x8e, 0xcd, 0x2c, 0x44, 0xab, 0xeb, 0x21, 0x37, 0x8d, 0xdc, 0x72, 0xd3,
+	0xfc, 0xe9, 0xa6, 0xd1, 0xea, 0x7a, 0xa8, 0xbd, 0x0e, 0xb3, 0x83, 0xc1, 0xbf, 0xe8, 0xb0, 0x10,
+	0x37, 0x60, 0xc2, 0x09, 0x89, 0xcb, 0x4a, 0x68, 0x21, 0x5b, 0x29, 0xd6, 0x0c, 0xfd, 0xd4, 0xbc,
+	0xe9, 0x83, 0x3e, 0x4c, 0x69, 0xad, 0x3d, 0x0d, 0xb9, 0x1d, 0xe2, 0xb6, 0x48, 0x80, 0x2f, 0x43,
+	0xbe, 0xc7, 0x48, 0xb0, 0x77, 0x2c, 0x6b, 0x8e, 0xff, 0x6c, 0xda, 0xf8, 0x12, 0x4c, 0xd0, 0x77,
+	0x3d, 0x12, 0x08, 0x71, 0x27, 0x4d, 0xf9, 0x43, 0xdb, 0x01, 0x90, 0x86, 0x82, 0x66, 0x35, 0x49,
+	0xf3, 0xa4, 0x02, 0x8d, 0xb4, 0x8e, 0x39, 0x2c, 0xb8, 0xd2, 0x64, 0x72, 0x6a, 0x77, 0x3f, 0x01,
+	0x4a, 0xde, 0xe9, 0x11, 0x16, 0x8e, 0xc7, 0xbb, 0x0e, 0x17, 0xe9, 0xc0, 0x7a, 0xbe, 0x40, 0x9e,
+	0x82, 0x99, 0xc1, 0xe9, 0xa6, 0xad, 0xbd, 0x04, 0xf3, 0xe3, 0xb6, 0x60, 0x3e, 0xf5, 0x18, 0xc1,
+	0x73, 0x90, 0x73, 0xc5, 0x77, 0xb1, 0xc5, 0xa4, 0x19, 0xfd, 0x1a, 0xa3, 0xc0, 0x3d, 0x04, 0xe5,
+	0x41, 0x37, 0xd2, 0x35, 0x8b, 0x81, 0x47, 0x70, 0xa1, 0x51, 0x5c, 0x78, 0x0b, 0xf2, 0x72, 0x1f,
+	0x26, 0xfc, 0x17, 0x6b, 0x8b, 0xca, 0xea, 0x71, 0xed, 0xcd, 0xd8, 0x5a, 0xfb, 0x22, 0x03, 0xf9,
+	0x3b, 0x01, 0x7d, 0x8b, 0xb4, 0xc3, 0x07, 0x56, 0x1f, 0x23, 0xa2, 0x9a, 0x18, 0x19, 0x55, 0xb2,
+	0x90, 0x72, 0x27, 0x17, 0x52, 0xfe, 0xec, 0x85, 0x34, 0x99, 0xa6, 0x90, 0x76, 0xa1, 0x18, 0x09,
+	0x24, 0x4e, 0xed, 0x5a, 0xf2, 0xd4, 0x56, 0x15, 0x74, 0x8f, 0xcc, 0xe3, 0x63, 0xfb, 0x73, 0x06,
+	0x26, 0x1a, 0x7d, 0xe2, 0xa9, 0x08, 0x3e, 0x42, 0xba, 0xec, 0x38, 0xe9, 0x58, 0xaf, 0xc5, 0xb7,
+	0xe1, 0x6b, 0x64, 0x12, 0x0a, 0xd1, 0x4c, 0xd3, 0xe6, 0x89, 0xe3, 0x97, 0x69, 0xa4, 0xbb, 0x18,
+	0xe3, 0x5d, 0xc8, 0xfb, 0xd6, 0x41, 0x97, 0x5a, 0x5c, 0x6a, 0x1e, 0xcb, 0x4d, 0x85, 0x58, 0x04,
+	0xb8, 0x7e, 0x47, 0xda, 0x35, 0xbc, 0x30, 0x38, 0x30, 0x63, 0x2f, 0xe7, 0xc8, 0x4f, 0x79, 0x05,
+	0xa6, 0x06, 0x7d, 0x72, 0x25, 0xde, 0x26, 0x07, 0x91, 0x34, 0x7c, 0xc8, 0xeb, 0xa9, 0x6f, 0x75,
+	0x7b, 0x24, 0x52, 0x47, 0xfe, 0x58, 0xc9, 0x3c, 0x83, 0xb4, 0x6d, 0x28, 0x08, 0x2a, 0x91, 0x9e,
+	0xe7, 0x93, 0xe9, 0xa9, 0xa8, 0x86, 0x14, 0x27, 0xe7, 0x5e, 0x06, 0x66, 0xb9, 0x23, 0x31, 0xb9,
+	0x2b, 0xce, 0x2f, 0xc3, 0xab, 0x90, 0xa7, 0x72, 0x28, 0x88, 0x8a, 0xb5, 0x6b, 0xc3, 0x6e, 0xa3,
+	0x37, 0xad, 0xbf, 0xa4, 0x73, 0xe3, 0xc8, 0xce, 0x8c, 0xad, 0xf0, 0x55, 0x28, 0xde, 0xcf, 0x0e,
+	0x2f, 0xd9, 0x6c, 0xa5, 0x60, 0xc2, 0x71, 0x7a, 0x18, 0x8f, 0x4e, 0x3c, 0x76, 0xa5, 0xac, 0xf8,
+	0x24, 0x7f, 0xe0, 0x55, 0x98, 0x3e, 0x16, 0x74, 0x3f, 0x24, 0x81, 0xc8, 0xeb, 0xc9, 0x9a, 0x4e,
+	0xc5, 0x9a, 0xf2, 0xf5, 0xb8, 0x0e, 0x33, 0xb1, 0x83, 0x16, 0xd9, 0xa7, 0x81, 0x3c, 0x00, 0x27,
+	0x7b, 0x88, 0xb7, 0x5c, 0x17, 0x06, 0xb5, 0x3f, 0x2f, 0xc1, 0x9c, 0x19, 0x89, 0xb6, 0x23, 0x45,
+	0x7b, 0x85, 0x04, 0x7d, 0xa7, 0x4d, 0xf0, 0x97, 0x08, 0xfe, 0x2f, 0xc2, 0x1d, 0x38, 0x8a, 0x0c,
+	0xab, 0x69, 0x53, 0x5e, 0x4e, 0xf9, 0xf8, 0x70, 0x5b, 0xad, 0xf6, 0xc1, 0xaf, 0x7f, 0x7c, 0x9c,
+	0xb9, 0x81, 0xab, 0xe2, 0xc9, 0x1f, 0xb2, 0xe0, 0xbd, 0x05, 0x23, 0xdd, 0x7d, 0x83, 0x26, 0x78,
+	0x3e, 0x47, 0x70, 0x71, 0x8b, 0x24, 0x20, 0xf1, 0x13, 0xe3, 0x19, 0x9b, 0x9b, 0x31, 0x61, 0xda,
+	0xe7, 0xf1, 0x74, 0xba, 0x04, 0x98, 0x71, 0xd7, 0xb1, 0x0f, 0xf1, 0x57, 0x08, 0xf0, 0x86, 0x10,
+	0x3c, 0x01, 0x98, 0x76, 0xef, 0xf4, 0xb0, 0x4f, 0x09, 0xd8, 0xaa, 0x76, 0x4d, 0x09, 0x76, 0x05,
+	0x55, 0xf1, 0x37, 0x08, 0xf0, 0x6b, 0xbe, 0xfd, 0xf0, 0x51, 0x6f, 0x0a, 0x54, 0xa3, 0x96, 0x42,
+	0x57, 0xce, 0xfb, 0x19, 0x02, 0x2c, 0x9f, 0x8e, 0xf3, 0xf1, 0x5e, 0x1d, 0x7f, 0x58, 0x1a, 0xae,
+	0x1f, 0x1e, 0xc4, 0x79, 0xaf, 0xa6, 0xc9, 0xfb, 0xb7, 0x08, 0x2e, 0x0f, 0xd7, 0x4e, 0xd4, 0x0c,
+	0xa8, 0x56, 0x50, 0xba, 0x27, 0x5f, 0x5b, 0x17, 0x94, 0xcf, 0xe1, 0x15, 0x45, 0xca, 0x36, 0xf5,
+	0x42, 0xf2, 0x1e, 0xbf, 0xb0, 0x0e, 0x8d, 0xa8, 0x5b, 0xc0, 0x3f, 0x20, 0x98, 0xab, 0xdb, 0xf6,
+	0x28, 0xe8, 0xdb, 0x29, 0x65, 0x4d, 0x76, 0x3e, 0xa7, 0x8b, 0xfc, 0x82, 0xc0, 0xdf, 0xd4, 0x56,
+	0x15, 0xf1, 0x87, 0x9e, 0xcd, 0xe3, 0x18, 0xf8, 0xc9, 0xf8, 0x11, 0xc1, 0xa3, 0xff, 0x3e, 0x19,
+	0x0f, 0x39, 0x92, 0xea, 0x7f, 0x11, 0xc9, 0x5f, 0x08, 0xe6, 0x46, 0x37, 0xa8, 0x78, 0x4d, 0x21,
+	0x8c, 0x13, 0xdb, 0xe7, 0x72, 0xfd, 0x1c, 0x1e, 0x64, 0x77, 0xac, 0xbd, 0x2c, 0x62, 0xdd, 0xc6,
+	0xcd, 0x73, 0xc6, 0x6a, 0xdc, 0x8d, 0x1a, 0xf9, 0x43, 0xfc, 0x35, 0x82, 0x29, 0x7e, 0xa0, 0xa3,
+	0xae, 0x4a, 0xb9, 0x5c, 0x74, 0xf5, 0x4e, 0x4d, 0xd4, 0xcb, 0x86, 0x40, 0xbf, 0x8d, 0x6f, 0x9d,
+	0xa1, 0x5e, 0xfc, 0x98, 0xed, 0x23, 0x04, 0xb0, 0x45, 0x62, 0x56, 0xb5, 0x77, 0x27, 0x45, 0x4b,
+	0xa9, 0x2d, 0x0a, 0xc8, 0xeb, 0x78, 0xec, 0x2d, 0x1e, 0x93, 0xc8, 0x5b, 0xe7, 0x3b, 0x04, 0xd3,
+	0xf2, 0xb5, 0x89, 0x89, 0x52, 0x6c, 0x96, 0x0a, 0x6c, 0x5b, 0x80, 0x35, 0xb4, 0xb5, 0xb3, 0x26,
+	0x3e, 0x06, 0xe7, 0xa7, 0xfc, 0x53, 0x04, 0xd3, 0xf2, 0xe5, 0x79, 0xd0, 0xd8, 0xd1, 0xab, 0x58,
+	0x53, 0xd3, 0x93, 0xb3, 0x7d, 0x88, 0x60, 0x5a, 0xde, 0x25, 0x67, 0x61, 0x3b, 0xf5, 0xb2, 0x88,
+	0x12, 0x5c, 0x55, 0x4c, 0xf0, 0xf7, 0x08, 0xe0, 0xb8, 0x7d, 0x65, 0x58, 0xa5, 0xc9, 0x1a, 0xee,
+	0x76, 0xcb, 0x37, 0x54, 0x7b, 0x66, 0x51, 0x26, 0x4d, 0x01, 0xb8, 0x81, 0xeb, 0xaa, 0x89, 0x96,
+	0xbb, 0xe8, 0x83, 0xe5, 0x42, 0x04, 0xed, 0x7a, 0xe3, 0xa7, 0xa3, 0x79, 0xf4, 0xcb, 0xd1, 0x3c,
+	0xfa, 0xed, 0x68, 0x1e, 0x7d, 0xf2, 0xfb, 0xfc, 0xff, 0xde, 0x58, 0x1e, 0xf8, 0x77, 0x28, 0x86,
+	0x5a, 0x94, 0xbe, 0x6d, 0xbe, 0x1f, 0x1b, 0xb1, 0x61, 0x2b, 0x27, 0x9a, 0xda, 0xe5, 0x7f, 0x02,
+	0x00, 0x00, 0xff, 0xff, 0x0a, 0xb7, 0x8f, 0x43, 0xad, 0x12, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -698,7 +1023,7 @@ type ResourceManagerServiceClient interface {
 	// Required permissions:
 	// - resourcemanager.organization.get on the organization, unless the requested user is identical to the authenticated user.
 	// Note that if the identified user or organization does not exist, no is returned.
-	IsMemberOfOrganization(ctx context.Context, in *IsMemberOfOrganizationRequest, opts ...grpc.CallOption) (*v1.YesOrNo, error)
+	IsMemberOfOrganization(ctx context.Context, in *IsMemberOfOrganizationRequest, opts ...grpc.CallOption) (*IsMemberOfOrganizationResponse, error)
 	// Fetch all projects in the organization identified by the given context ID.
 	// The authenticated user must be a member of the organization identifier by the given context ID.
 	// Required permissions:
@@ -727,6 +1052,11 @@ type ResourceManagerServiceClient interface {
 	// Required permissions:
 	// - resourcemanager.project.delete on the project
 	DeleteProject(ctx context.Context, in *Project, opts ...grpc.CallOption) (*v1.Empty, error)
+	// Fetch all events in the organization identified by the given context ID.
+	// The authenticated user must be a member of the organization identifier by the given context ID.
+	// Required permissions:
+	// - resourcemanager.event.list on the organization identified by the given context ID
+	ListEvents(ctx context.Context, in *ListEventOptions, opts ...grpc.CallOption) (*EventList, error)
 }
 
 type resourceManagerServiceClient struct {
@@ -809,8 +1139,8 @@ func (c *resourceManagerServiceClient) DeleteOrganizationMembers(ctx context.Con
 	return out, nil
 }
 
-func (c *resourceManagerServiceClient) IsMemberOfOrganization(ctx context.Context, in *IsMemberOfOrganizationRequest, opts ...grpc.CallOption) (*v1.YesOrNo, error) {
-	out := new(v1.YesOrNo)
+func (c *resourceManagerServiceClient) IsMemberOfOrganization(ctx context.Context, in *IsMemberOfOrganizationRequest, opts ...grpc.CallOption) (*IsMemberOfOrganizationResponse, error) {
+	out := new(IsMemberOfOrganizationResponse)
 	err := c.cc.Invoke(ctx, "/arangodb.cloud.resourcemanager.v1.ResourceManagerService/IsMemberOfOrganization", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -863,6 +1193,15 @@ func (c *resourceManagerServiceClient) DeleteProject(ctx context.Context, in *Pr
 	return out, nil
 }
 
+func (c *resourceManagerServiceClient) ListEvents(ctx context.Context, in *ListEventOptions, opts ...grpc.CallOption) (*EventList, error) {
+	out := new(EventList)
+	err := c.cc.Invoke(ctx, "/arangodb.cloud.resourcemanager.v1.ResourceManagerService/ListEvents", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ResourceManagerServiceServer is the server API for ResourceManagerService service.
 type ResourceManagerServiceServer interface {
 	// Fetch all organizations that the authenticated user is a member of.
@@ -905,7 +1244,7 @@ type ResourceManagerServiceServer interface {
 	// Required permissions:
 	// - resourcemanager.organization.get on the organization, unless the requested user is identical to the authenticated user.
 	// Note that if the identified user or organization does not exist, no is returned.
-	IsMemberOfOrganization(context.Context, *IsMemberOfOrganizationRequest) (*v1.YesOrNo, error)
+	IsMemberOfOrganization(context.Context, *IsMemberOfOrganizationRequest) (*IsMemberOfOrganizationResponse, error)
 	// Fetch all projects in the organization identified by the given context ID.
 	// The authenticated user must be a member of the organization identifier by the given context ID.
 	// Required permissions:
@@ -934,6 +1273,11 @@ type ResourceManagerServiceServer interface {
 	// Required permissions:
 	// - resourcemanager.project.delete on the project
 	DeleteProject(context.Context, *Project) (*v1.Empty, error)
+	// Fetch all events in the organization identified by the given context ID.
+	// The authenticated user must be a member of the organization identifier by the given context ID.
+	// Required permissions:
+	// - resourcemanager.event.list on the organization identified by the given context ID
+	ListEvents(context.Context, *ListEventOptions) (*EventList, error)
 }
 
 func RegisterResourceManagerServiceServer(s *grpc.Server, srv ResourceManagerServiceServer) {
@@ -1192,6 +1536,24 @@ func _ResourceManagerService_DeleteProject_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ResourceManagerService_ListEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEventOptions)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResourceManagerServiceServer).ListEvents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/arangodb.cloud.resourcemanager.v1.ResourceManagerService/ListEvents",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResourceManagerServiceServer).ListEvents(ctx, req.(*ListEventOptions))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _ResourceManagerService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "arangodb.cloud.resourcemanager.v1.ResourceManagerService",
 	HandlerType: (*ResourceManagerServiceServer)(nil),
@@ -1251,6 +1613,10 @@ var _ResourceManagerService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProject",
 			Handler:    _ResourceManagerService_DeleteProject_Handler,
+		},
+		{
+			MethodName: "ListEvents",
+			Handler:    _ResourceManagerService_ListEvents_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1468,6 +1834,47 @@ func (m *IsMemberOfOrganizationRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *IsMemberOfOrganizationResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *IsMemberOfOrganizationResponse) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Member {
+		dAtA[i] = 0x8
+		i++
+		if m.Member {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if m.Owner {
+		dAtA[i] = 0x10
+		i++
+		if m.Owner {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func (m *OrganizationMembersRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1619,6 +2026,198 @@ func (m *ProjectList) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *Event) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Event) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Id) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(len(m.Id)))
+		i += copy(dAtA[i:], m.Id)
+	}
+	if len(m.Url) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(len(m.Url)))
+		i += copy(dAtA[i:], m.Url)
+	}
+	if len(m.OrganizationId) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(len(m.OrganizationId)))
+		i += copy(dAtA[i:], m.OrganizationId)
+	}
+	if len(m.SubjectId) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(len(m.SubjectId)))
+		i += copy(dAtA[i:], m.SubjectId)
+	}
+	if len(m.Type) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(len(m.Type)))
+		i += copy(dAtA[i:], m.Type)
+	}
+	if len(m.Payload) > 0 {
+		for k, _ := range m.Payload {
+			dAtA[i] = 0x32
+			i++
+			v := m.Payload[k]
+			mapSize := 1 + len(k) + sovResourcemanager(uint64(len(k))) + 1 + len(v) + sovResourcemanager(uint64(len(v)))
+			i = encodeVarintResourcemanager(dAtA, i, uint64(mapSize))
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintResourcemanager(dAtA, i, uint64(len(k)))
+			i += copy(dAtA[i:], k)
+			dAtA[i] = 0x12
+			i++
+			i = encodeVarintResourcemanager(dAtA, i, uint64(len(v)))
+			i += copy(dAtA[i:], v)
+		}
+	}
+	if m.CreatedAt != nil {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(m.CreatedAt.Size()))
+		n6, err := m.CreatedAt.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n6
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *EventList) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EventList) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, msg := range m.Items {
+			dAtA[i] = 0xa
+			i++
+			i = encodeVarintResourcemanager(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *ListEventOptions) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *ListEventOptions) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Options != nil {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(m.Options.Size()))
+		n7, err := m.Options.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n7
+	}
+	if len(m.SubjectIds) > 0 {
+		for _, s := range m.SubjectIds {
+			dAtA[i] = 0x12
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if len(m.Types) > 0 {
+		for _, s := range m.Types {
+			dAtA[i] = 0x1a
+			i++
+			l = len(s)
+			for l >= 1<<7 {
+				dAtA[i] = uint8(uint64(l)&0x7f | 0x80)
+				l >>= 7
+				i++
+			}
+			dAtA[i] = uint8(l)
+			i++
+			i += copy(dAtA[i:], s)
+		}
+	}
+	if m.CreatedAfter != nil {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(m.CreatedAfter.Size()))
+		n8, err := m.CreatedAfter.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n8
+	}
+	if m.CreatedBefore != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintResourcemanager(dAtA, i, uint64(m.CreatedBefore.Size()))
+		n9, err := m.CreatedBefore.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n9
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func encodeVarintResourcemanager(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -1742,6 +2341,24 @@ func (m *IsMemberOfOrganizationRequest) Size() (n int) {
 	return n
 }
 
+func (m *IsMemberOfOrganizationResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Member {
+		n += 2
+	}
+	if m.Owner {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *OrganizationMembersRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1816,6 +2433,104 @@ func (m *ProjectList) Size() (n int) {
 			l = e.Size()
 			n += 1 + l + sovResourcemanager(uint64(l))
 		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Event) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Id)
+	if l > 0 {
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	l = len(m.Url)
+	if l > 0 {
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	l = len(m.OrganizationId)
+	if l > 0 {
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	l = len(m.SubjectId)
+	if l > 0 {
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	l = len(m.Type)
+	if l > 0 {
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	if len(m.Payload) > 0 {
+		for k, v := range m.Payload {
+			_ = k
+			_ = v
+			mapEntrySize := 1 + len(k) + sovResourcemanager(uint64(len(k))) + 1 + len(v) + sovResourcemanager(uint64(len(v)))
+			n += mapEntrySize + 1 + sovResourcemanager(uint64(mapEntrySize))
+		}
+	}
+	if m.CreatedAt != nil {
+		l = m.CreatedAt.Size()
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *EventList) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Items) > 0 {
+		for _, e := range m.Items {
+			l = e.Size()
+			n += 1 + l + sovResourcemanager(uint64(l))
+		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *ListEventOptions) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Options != nil {
+		l = m.Options.Size()
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	if len(m.SubjectIds) > 0 {
+		for _, s := range m.SubjectIds {
+			l = len(s)
+			n += 1 + l + sovResourcemanager(uint64(l))
+		}
+	}
+	if len(m.Types) > 0 {
+		for _, s := range m.Types {
+			l = len(s)
+			n += 1 + l + sovResourcemanager(uint64(l))
+		}
+	}
+	if m.CreatedAfter != nil {
+		l = m.CreatedAfter.Size()
+		n += 1 + l + sovResourcemanager(uint64(l))
+	}
+	if m.CreatedBefore != nil {
+		l = m.CreatedBefore.Size()
+		n += 1 + l + sovResourcemanager(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -2462,6 +3177,97 @@ func (m *IsMemberOfOrganizationRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *IsMemberOfOrganizationResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowResourcemanager
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: IsMemberOfOrganizationResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: IsMemberOfOrganizationResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Member", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Member = bool(v != 0)
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Owner", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Owner = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipResourcemanager(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *OrganizationMembersRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2914,6 +3720,643 @@ func (m *ProjectList) Unmarshal(dAtA []byte) error {
 			}
 			m.Items = append(m.Items, &Project{})
 			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipResourcemanager(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Event) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowResourcemanager
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Event: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Event: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Url", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Url = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field OrganizationId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.OrganizationId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SubjectId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SubjectId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Type = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Payload", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Payload == nil {
+				m.Payload = make(map[string]string)
+			}
+			var mapkey string
+			var mapvalue string
+			for iNdEx < postIndex {
+				entryPreIndex := iNdEx
+				var wire uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return ErrIntOverflowResourcemanager
+					}
+					if iNdEx >= l {
+						return io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					wire |= (uint64(b) & 0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				fieldNum := int32(wire >> 3)
+				if fieldNum == 1 {
+					var stringLenmapkey uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowResourcemanager
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapkey |= (uint64(b) & 0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapkey := int(stringLenmapkey)
+					if intStringLenmapkey < 0 {
+						return ErrInvalidLengthResourcemanager
+					}
+					postStringIndexmapkey := iNdEx + intStringLenmapkey
+					if postStringIndexmapkey > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapkey = string(dAtA[iNdEx:postStringIndexmapkey])
+					iNdEx = postStringIndexmapkey
+				} else if fieldNum == 2 {
+					var stringLenmapvalue uint64
+					for shift := uint(0); ; shift += 7 {
+						if shift >= 64 {
+							return ErrIntOverflowResourcemanager
+						}
+						if iNdEx >= l {
+							return io.ErrUnexpectedEOF
+						}
+						b := dAtA[iNdEx]
+						iNdEx++
+						stringLenmapvalue |= (uint64(b) & 0x7F) << shift
+						if b < 0x80 {
+							break
+						}
+					}
+					intStringLenmapvalue := int(stringLenmapvalue)
+					if intStringLenmapvalue < 0 {
+						return ErrInvalidLengthResourcemanager
+					}
+					postStringIndexmapvalue := iNdEx + intStringLenmapvalue
+					if postStringIndexmapvalue > l {
+						return io.ErrUnexpectedEOF
+					}
+					mapvalue = string(dAtA[iNdEx:postStringIndexmapvalue])
+					iNdEx = postStringIndexmapvalue
+				} else {
+					iNdEx = entryPreIndex
+					skippy, err := skipResourcemanager(dAtA[iNdEx:])
+					if err != nil {
+						return err
+					}
+					if skippy < 0 {
+						return ErrInvalidLengthResourcemanager
+					}
+					if (iNdEx + skippy) > postIndex {
+						return io.ErrUnexpectedEOF
+					}
+					iNdEx += skippy
+				}
+			}
+			m.Payload[mapkey] = mapvalue
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAt", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedAt == nil {
+				m.CreatedAt = &types.Timestamp{}
+			}
+			if err := m.CreatedAt.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipResourcemanager(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EventList) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowResourcemanager
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EventList: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EventList: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Items", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Items = append(m.Items, &Event{})
+			if err := m.Items[len(m.Items)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipResourcemanager(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *ListEventOptions) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowResourcemanager
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: ListEventOptions: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: ListEventOptions: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Options", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Options == nil {
+				m.Options = &v1.ListOptions{}
+			}
+			if err := m.Options.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SubjectIds", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SubjectIds = append(m.SubjectIds, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Types", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Types = append(m.Types, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedAfter", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedAfter == nil {
+				m.CreatedAfter = &types.Timestamp{}
+			}
+			if err := m.CreatedAfter.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CreatedBefore", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowResourcemanager
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthResourcemanager
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.CreatedBefore == nil {
+				m.CreatedBefore = &types.Timestamp{}
+			}
+			if err := m.CreatedBefore.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

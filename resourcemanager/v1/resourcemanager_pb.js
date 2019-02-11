@@ -14,7 +14,11 @@ var global = Function('return this')();
 var common_v1_common_pb = require('./common/v1/common_pb.js');
 var github_com_golang_protobuf_ptypes_timestamp_timestamp_pb = require('./github.com/golang/protobuf/ptypes/timestamp/timestamp_pb.js');
 var google_api_annotations_pb = require('./google/api/annotations_pb.js');
+goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.Event', null, global);
+goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.EventList', null, global);
 goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationRequest', null, global);
+goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse', null, global);
+goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.ListEventOptions', null, global);
 goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.Member', null, global);
 goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.MemberList', null, global);
 goog.exportSymbol('proto.arangodb.cloud.resourcemanager.v1.Organization', null, global);
@@ -1049,6 +1053,179 @@ proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationRequest.prototype.
  * @extends {jspb.Message}
  * @constructor
  */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.displayName = 'proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    member: jspb.Message.getFieldWithDefault(msg, 1, false),
+    owner: jspb.Message.getFieldWithDefault(msg, 2, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse;
+  return proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setMember(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setOwner(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getMember();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getOwner();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool member = 1;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.getMember = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 1, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.setMember = function(value) {
+  jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional bool owner = 2;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.getOwner = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 2, false));
+};
+
+
+/** @param {boolean} value */
+proto.arangodb.cloud.resourcemanager.v1.IsMemberOfOrganizationResponse.prototype.setOwner = function(value) {
+  jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
 proto.arangodb.cloud.resourcemanager.v1.OrganizationMembersRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
@@ -1756,6 +1933,833 @@ proto.arangodb.cloud.resourcemanager.v1.ProjectList.prototype.addItems = functio
 
 proto.arangodb.cloud.resourcemanager.v1.ProjectList.prototype.clearItemsList = function() {
   this.setItemsList([]);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.arangodb.cloud.resourcemanager.v1.Event, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.arangodb.cloud.resourcemanager.v1.Event.displayName = 'proto.arangodb.cloud.resourcemanager.v1.Event';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.toObject = function(opt_includeInstance) {
+  return proto.arangodb.cloud.resourcemanager.v1.Event.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.Event} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    id: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    url: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    organizationId: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    subjectId: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    payloadMap: (f = msg.getPayloadMap()) ? f.toObject(includeInstance, undefined) : [],
+    createdAt: (f = msg.getCreatedAt()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.Event}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.arangodb.cloud.resourcemanager.v1.Event;
+  return proto.arangodb.cloud.resourcemanager.v1.Event.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.Event} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.Event}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUrl(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setOrganizationId(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSubjectId(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setType(value);
+      break;
+    case 6:
+      var value = msg.getPayloadMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "");
+         });
+      break;
+    case 7:
+      var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
+      reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.arangodb.cloud.resourcemanager.v1.Event.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.Event} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getOrganizationId();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getSubjectId();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getType();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getPayloadMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string id = 1;
+ * @return {string}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setId = function(value) {
+  jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string url = 2;
+ * @return {string}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setUrl = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string organization_id = 3;
+ * @return {string}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getOrganizationId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setOrganizationId = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string subject_id = 4;
+ * @return {string}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getSubjectId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setSubjectId = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string type = 5;
+ * @return {string}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setType = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * map<string, string> payload = 6;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,string>}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getPayloadMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,string>} */ (
+      jspb.Message.getMapField(this, 6, opt_noLazyCreate,
+      null));
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.clearPayloadMap = function() {
+  this.getPayloadMap().clear();
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 7;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp, 7));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.setCreatedAt = function(value) {
+  jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.clearCreatedAt = function() {
+  this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.Event.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.arangodb.cloud.resourcemanager.v1.EventList.repeatedFields_, null);
+};
+goog.inherits(proto.arangodb.cloud.resourcemanager.v1.EventList, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.arangodb.cloud.resourcemanager.v1.EventList.displayName = 'proto.arangodb.cloud.resourcemanager.v1.EventList';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.toObject = function(opt_includeInstance) {
+  return proto.arangodb.cloud.resourcemanager.v1.EventList.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.EventList} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    itemsList: jspb.Message.toObjectList(msg.getItemsList(),
+    proto.arangodb.cloud.resourcemanager.v1.Event.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.EventList}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.arangodb.cloud.resourcemanager.v1.EventList;
+  return proto.arangodb.cloud.resourcemanager.v1.EventList.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.EventList} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.EventList}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.arangodb.cloud.resourcemanager.v1.Event;
+      reader.readMessage(value,proto.arangodb.cloud.resourcemanager.v1.Event.deserializeBinaryFromReader);
+      msg.addItems(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.arangodb.cloud.resourcemanager.v1.EventList.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.EventList} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getItemsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.arangodb.cloud.resourcemanager.v1.Event.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated Event items = 1;
+ * @return {!Array<!proto.arangodb.cloud.resourcemanager.v1.Event>}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.getItemsList = function() {
+  return /** @type{!Array<!proto.arangodb.cloud.resourcemanager.v1.Event>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.arangodb.cloud.resourcemanager.v1.Event, 1));
+};
+
+
+/** @param {!Array<!proto.arangodb.cloud.resourcemanager.v1.Event>} value */
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.setItemsList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.Event=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.Event}
+ */
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.addItems = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.arangodb.cloud.resourcemanager.v1.Event, opt_index);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.EventList.prototype.clearItemsList = function() {
+  this.setItemsList([]);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.repeatedFields_, null);
+};
+goog.inherits(proto.arangodb.cloud.resourcemanager.v1.ListEventOptions, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.displayName = 'proto.arangodb.cloud.resourcemanager.v1.ListEventOptions';
+}
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.repeatedFields_ = [2,3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.toObject = function(opt_includeInstance) {
+  return proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    options: (f = msg.getOptions()) && common_v1_common_pb.ListOptions.toObject(includeInstance, f),
+    subjectIdsList: jspb.Message.getRepeatedField(msg, 2),
+    typesList: jspb.Message.getRepeatedField(msg, 3),
+    createdAfter: (f = msg.getCreatedAfter()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    createdBefore: (f = msg.getCreatedBefore()) && github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.arangodb.cloud.resourcemanager.v1.ListEventOptions;
+  return proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new common_v1_common_pb.ListOptions;
+      reader.readMessage(value,common_v1_common_pb.ListOptions.deserializeBinaryFromReader);
+      msg.setOptions(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSubjectIds(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTypes(value);
+      break;
+    case 4:
+      var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
+      reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAfter(value);
+      break;
+    case 5:
+      var value = new github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp;
+      reader.readMessage(value,github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedBefore(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.arangodb.cloud.resourcemanager.v1.ListEventOptions} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getOptions();
+  if (f != null) {
+    writer.writeMessage(
+      1,
+      f,
+      common_v1_common_pb.ListOptions.serializeBinaryToWriter
+    );
+  }
+  f = message.getSubjectIdsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getTypesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getCreatedAfter();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getCreatedBefore();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional arangodb.cloud.common.v1.ListOptions options = 1;
+ * @return {?proto.arangodb.cloud.common.v1.ListOptions}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.getOptions = function() {
+  return /** @type{?proto.arangodb.cloud.common.v1.ListOptions} */ (
+    jspb.Message.getWrapperField(this, common_v1_common_pb.ListOptions, 1));
+};
+
+
+/** @param {?proto.arangodb.cloud.common.v1.ListOptions|undefined} value */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.setOptions = function(value) {
+  jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.clearOptions = function() {
+  this.setOptions(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.hasOptions = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * repeated string subject_ids = 2;
+ * @return {!Array<string>}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.getSubjectIdsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/** @param {!Array<string>} value */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.setSubjectIdsList = function(value) {
+  jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.addSubjectIds = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.clearSubjectIdsList = function() {
+  this.setSubjectIdsList([]);
+};
+
+
+/**
+ * repeated string types = 3;
+ * @return {!Array<string>}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.getTypesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/** @param {!Array<string>} value */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.setTypesList = function(value) {
+  jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {!string} value
+ * @param {number=} opt_index
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.addTypes = function(value, opt_index) {
+  jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.clearTypesList = function() {
+  this.setTypesList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_after = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.getCreatedAfter = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp, 4));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.setCreatedAfter = function(value) {
+  jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.clearCreatedAfter = function() {
+  this.setCreatedAfter(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.hasCreatedAfter = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_before = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.getCreatedBefore = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, github_com_golang_protobuf_ptypes_timestamp_timestamp_pb.Timestamp, 5));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.setCreatedBefore = function(value) {
+  jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.clearCreatedBefore = function() {
+  this.setCreatedBefore(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.arangodb.cloud.resourcemanager.v1.ListEventOptions.prototype.hasCreatedBefore = function() {
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
